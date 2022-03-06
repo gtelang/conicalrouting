@@ -16,6 +16,7 @@ from colorama import Fore, Style
 import scipy as sp
 import numpy as np
 import itertools
+import math
 # For plotting/rendering etc.
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -451,7 +452,7 @@ def conical_routing(fig, ax, box, dx, eps, W, lookahead_lb, lookaheadmethod=min_
           #......................................................................................................
           # Draw  the graph edges by rendering the geometrical segment associated with each edge of the graph
           #......................................................................................................
-          draw_graph_edges(fig, ax, G,  alpha=0.1, markendpts_p=False)               
+          draw_graph_edges(fig, ax, G,  alpha=0.05, markendpts_p=False)               
 
           #..............................................
           # Draw all the armbunches
@@ -480,31 +481,19 @@ def conical_routing(fig, ax, box, dx, eps, W, lookahead_lb, lookaheadmethod=min_
      #......................................................................................................
      # Solve the integer programming model here. 
      #......................................................................................................
-     print("==================> Solving the integer/linear program here <====================")
      start_time      = time.time() 
      lookpathnodeids = lookaheadmethod(G,start_node_idx, target_node_idx, lookahead_lb=lookahead_lb, hplanes=hplanes)
      end_time        = time.time() 
      time_elapsed    = end_time - start_time
-     print "Time taken for lookaheadmethod function to run : ", round(time_elapsed,4) , " seconds"
-     #................................................................
-     # Render the path here
-     #................................................................
-     draw_path(fig,ax,G,lookpathnodeids, color='green', linewidth=2, alpha=1.0)
-     ax.set_xlabel("Shortest Path (Red) length: "       + str(round(pathlength(G,spathnodeids   ),4))  +\
-                    "\nLookahead Path (Green) length :" + str(round(pathlength(G,lookpathnodeids),4)) +\
-                    "\nLP relaxation lower bound (Magenta) \underline{weighted} length :" + str(round(path_length_lb,4)),\
-                   fontsize=12)
+     print "Time elapsed for lookaheadmethod function to run : ", round(time_elapsed,4) , " seconds"
 
-     ax.set_ylabel("Lookahead Lower Bound = " + str(round(lookahead_lb,4)), fontsize=15)
 
-     #....................................
-     # Print summary information of computation
-     #....................................
-     print Fore.GREEN,    "Shortest path length is ", round(pathlength(G,spathnodeids),4), Style.RESET_ALL
-     print Fore.YELLOW, "Lookahead path length is ", round(pathlength(G,lookpathnodeids),4), Style.RESET_ALL
-     print "......................................................................"
-     print "LP relxation lower bound on optimal path length is : " , round(path_length_lb,4)
-     print "......................................................................"
+     return G,  lookpathnodeids, spathnodeids, {'lookpathlength'    : pathlength(G,lookpathnodeids), \
+                                                'spathlength'       : pathlength(G,spathnodeids ),   \
+                                                'path_length_lb'    : path_length_lb,                \
+                                                'numcones'          : len(flat_list_arms)-1,                      \
+                                                'non_zero_sol_edges': non_zero_sol_edges }
+
 #---------------------------------------------------------------------------------------------
 def pathlength(G,pathnodeidxs):
       """ Sum of the edge weights of the edges of a path. A path is represented by the list of its nodes. 
@@ -1085,16 +1074,37 @@ def make_box (start, target, xleft, xright, ydown, yup, mtips, ttips):
      box = Box(xleft,xright,ydown,yup, ites, start=start, target=target);
      return box
 
+#-----------------------------------------------------------------------------------------------
+def make_non_zero_sol_edges_bar_plot(fig, ax, numcones, non_zero_sol_edges):
+          bins     = [0 for i in range(numcones)]
+          
+          for (n1, n2) in non_zero_sol_edges:
+               conenum       = n1[0]
+               bins[conenum] += 1
+
+          # for marking only integers on the Y axis
+          yint = range(min(bins), int(math.ceil(max(bins)))+1)
+          mpl.pyplot.yticks(yint)
+          
+          ax.bar([str(i).zfill(2) for i in range(numcones)], bins, color='maroon', width=0.4)
+          ax.grid(True, ls='dotted', axis='y')
+          ax.set_title("Number of non zero edges in cones", fontsize=20)
+          ax.set_xlabel("Cone id", fontsize=20)
+          ax.set_ylabel("Number of non-zero edges in cone", fontsize=20)
+
+
+
 #---------------------------------------------------------------------------------
 def main():
-     dx           = 0.1
+     dx           = 0.05
      eps          = 0.02
-     W            = 6
+     W            = 5
      lookahead_lb = 0.5
 
      box = make_box(start=(0,0), target=(1,0), xleft=0, xright=1, ydown=0, yup=1, mtips=list(map(np.asarray, [ [0.2,0.7] ])), ttips=[])
      #box = make_box(start=(0,0), target=(1,1), xleft=0, xright=1, ydown=0, yup=1, mtips=list(map(np.asarray, [ [0.2,0.7] ])), ttips=list(map(np.asarray, [[0.7,0.2]])))
-     #box = make_box(start=(0,0), target=(3,1), xleft=0, xright=3, ydown=0, yup=1, mtips=list(map(np.asarray, [[0.5,0.7], [1.2,0.5]])), ttips  = list(map(np.asarray, [(0.8,0.2), (2.5,0.2)])) )
+     #box = make_box(start=(0,0), target=(3,0.6), xleft=0, xright=3, ydown=0, yup=1, mtips=list(map(np.asarray, [[0.5,0.7], [1.2,0.5]])), ttips  = list(map(np.asarray, [(0.8,0.2), (2.5,0.2)])) )
+     #box = make_box(start=(0,0), target=(3,0.6), xleft=0, xright=3, ydown=0, yup=1, mtips=list(map(np.asarray, [[0.5,0.7], [1.2,0.5],[2,0.5]])), ttips  = list(map(np.asarray, [(0.8,0.2), (1.5,0.2)  , (2.5,0.2)])) )
 
      # Get the coordinates of the start and target
      start  = box.start
@@ -1119,14 +1129,34 @@ def main():
      # Perform computation to compute lookaheadcurve. since fig, ax
      # have been passedd to the routine, this will enable graphical debugging. 
      # later we can move the graphical plotting part outside the function. 
-     lookahead_curve=  conical_routing(fig, ax, box, 
-                                       dx                    = dx, 
-                                       eps                   = eps, 
-                                       W                     = W, 
-                                       lookahead_lb          = lookahead_lb, 
-                                       draw_mesh_p           = False, 
-                                       draw_lp_relax_curve_p = True)
+     G,  lookpathnodeids, spathnodeids, info =  conical_routing(fig, ax, box, 
+                                                                dx                    = dx, 
+                                                                eps                   = eps, 
+                                                                W                     = W, 
+                                                                lookahead_lb          = lookahead_lb, 
+                                                                draw_mesh_p           = True, 
+                                                                draw_lp_relax_curve_p = False)
+     #....................................
+     # Print summary 
+     print Fore.GREEN,    "Shortest path length is ", round(info['spathlength'] ,4), Style.RESET_ALL
+     print Fore.YELLOW, "Lookahead path length is " , round(info['lookpathlength'],4), Style.RESET_ALL
+     print "......................................................................"
+     print "LP relxation lower bound on optimal path length is : " , round(info['spathlength'],4)
+     
+     # Render the path and set appropriate axes information
+     draw_path(fig,ax,G,lookpathnodeids, color='green', linewidth=2, alpha=1.0)
+     ax.set_xlabel("Shortest Path (Red) length: "       + str(round(pathlength(G,spathnodeids   ),3))  +\
+                    "\nLookahead Path (Green) length :" + str(round(pathlength(G,lookpathnodeids),3)) +\
+                    "\nLP relaxation lower bound (Magenta) \underline{weighted} length :" + str(round(info['path_length_lb'],3)),\
+                   fontsize=12)
+     ax.set_ylabel("Lookahead Lower Bound = " + str(round(lookahead_lb,4)), fontsize=15)
+
+     # bar chart of the non-zero edges
+     fig_bar, ax_bar = plt.subplots()
+     make_non_zero_sol_edges_bar_plot(fig_bar,ax_bar,info['numcones'],info['non_zero_sol_edges'])
      plt.show()
+
+
 #-----------------------------------------------------------------------------    
 if __name__=="__main__":
      main()
