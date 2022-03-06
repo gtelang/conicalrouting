@@ -1,2 +1,6 @@
 pdfsforjoe/
 githubtoken
+src/*.lp
+src/*.txt
+src/*~
+src/*swp
