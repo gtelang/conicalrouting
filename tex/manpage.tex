@@ -1,0 +1,36 @@
+\vspace{5mm}
+\begin{description}
+  \item[NAME] {\tt ls} - list directory contents
+  \item[SYNOPSIS]  List  information  about the FILEs (the current directory by default).  
+                   Mandatory arguments to long options are mandatory for short options too.
+  \item[DESCRIPTION] \kant[1]
+  \item[OPTIONS]
+     \begin{description}
+        \item[\opt{-a, --all}]
+              do not ignore entries starting with .
+        \item[\opt {-A, --almost-all}]
+              do not list implied . and ..
+       \item[\opt{ --author}]
+              with {\tt -l}, print the author of each file
+       \item[\opt{ -h, --human-readable}]
+              with \opt{-l} and/or \opt{-s}, print human readable sizes 
+     \end{description}
+  \item[EXIT STATUS]
+     \begin{itemize}
+       \item[\tt{0}] if OK
+       \item[\tt{1}] if minor problems (e.g. cannot access subdirectory)
+       \item[\tt{2}] if serious trouble (e.g. cannot access command-line argument)
+     \end{itemize}    
+  \item [QUICK INSTALLATION INSTRUCTIONS] Mention what is required for the code to run, what libraries                                                                                                  
+        and links to download sites. The list of dependencies can be extracted                                                                                        
+        by using AWK on the files, alternatively, keep a running tag of                                                                                               
+        libraries used, by adding to a separate Index which remembers what                                                                                            
+        software was used. For C\texttt{++} programs, all you would have to do                                                                                        
+        once the dependencies are installed to type make. Alternatively                                                                                               
+        you can also provide a configur script for a larger program.                                                                                                  
+        Even better just give them your docker container and tell them                                                                                                
+        how to execute the program via the docker container. The docker                                                                                                
+        container should be minimal, skeletal actually so that it does                                                                                                
+        not take up disk space. Thus this must contain short installation                                                                                              
+        instructions.   
+\end{description}

@@ -1,0 +1,176 @@
+\usepackage[a4paper, 
+            left=2.0cm, 
+            right=1.7cm, 
+            top=3cm, 
+            bottom=2.0cm,
+            marginparwidth=1cm]{geometry}
+% following two lines suggested by Joh Kitchin 
+% for writing nice documents with well-spaced lines
+\usepackage{setspace}
+\onehalfspacing
+
+\setlength{\parindent}{20pt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm,amsmath,amssymb,amsfonts}
+\usepackage{csquotes}
+\usepackage{titling}
+\setlength{\droptitle}{-60pt}
+\usepackage{marginnote}
+% to take away the error unknown float option `H'
+\usepackage{float}             
+% Making caption font smaller on figures and tables.  
+% https://stackoverflow.com/a/27243065/505306
+\usepackage{caption} 
+\captionsetup{font=footnotesize}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{tocloft}
+% Adding a line at the top of the table of contents saying page
+\addtocontents{toc}{~\hfill\textbf{Page}\par}
+\renewcommand\cftsecleader{\cftdotfill{\cftdotsep}}
+\usepackage[titletoc,toc,page]{appendix}
+% The great microtype package for better word adjustment 
+%https://tex.stackexchange.com/a/586  
+\usepackage[stretch=10]{microtype} 
+% For aligning itemize environments to left 
+% https://tex.stackexchange.com/a/278199/17858
+\usepackage{enumitem}               
+% if you want to create a new list from scratch  
+% https://tex.stackexchange.com/q/2291/17858
+\newlist{alphalist}{enumerate}{1}      
+% in that case, at least label must be specified using \setlist
+\setlist[alphalist,1]{label=\textbf{\Alph*.}} 
+\usepackage[english]{babel}
+\setlength{\headsep}{5pt}
+\usepackage{blindtext,kantlipsum}
+%\usepackage{IEEEtrantools}
+\usepackage{ieeetrantools}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage[inline]{asymptote}
+\usepackage{asypictureB}
+\usepackage{filecontents}
+\usepackage{parskip} 
+\usepackage{tikz,graphicx}                            
+% For lists in two or more columns
+\usepackage{multicol}  
+\usepackage[nokwfunc, ruled]{algorithm2e}
+\newcommand\mycommfont[1]{\footnotesize\ttfamily\textcolor{blue}{#1}}
+\usepackage[T1]{fontenc}
+% So that sections/code-blocks don't straddle two pages 
+\usepackage{needspace}  
+\usepackage{mathtools}
+\usepackage{subfig}
+\usepackage{etoolbox}
+\usepackage{color}
+\usepackage{pifont}
+% For italicizing quotes: https://tex.stackexchange.com/a/288556/17858, 
+% from https://tex.stackexchange.com/a/391739
+\usepackage{quoting,xparse} 
+\NewDocumentCommand{\bywhom}{m}{% the Bourbaki trick
+  {\nobreak\hfill\penalty50\hskip1em\null\nobreak
+   \hfill\mbox{\normalfont(#1)}%
+   \parfillskip=0pt \finalhyphendemerits=0 \par}%
+}
+\NewDocumentEnvironment{pquotation}{m}
+  {\begin{quoting}[
+     indentfirst=true,
+     leftmargin=\parindent,
+     rightmargin=\parindent]\itshape}
+  {\bywhom{#1}\end{quoting}}
+% Convenience commands
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\providecommand{\myceil}[1]{\left \lceil #1 \right \rceil }	    % Ceil function
+% Floor function\renewcommand{\labelitemi}{\tiny$\blacksquare$}	
+\providecommand{\myfloor}[1]{\left \lfloor #1 \right \rfloor }
+% for drawing the conditional probability `|` sign neatly.
+\newcommand\given[1][]{\:#1\vert\:} 
+\newcommand\RR{\mathbb{R}}				
+\newcommand\CC{\mathbb{C}}			
+\newcommand\ZZ{\mathbb{Z}}		
+\newcommand\NN{\mathbb{N}}	
+\newcommand\rarr{\rightarrow}
+\newcommand\larr{\leftarrow}	
+\newcommand\defeq{\coloneqq}% := symbol
+\renewcommand\tilde{ \: \thicksim \: }% Sane tildas
+\newmdenv[topline=false, 
+	  bottomline=false, 
+	  skipabove=\topsep,
+	  skipbelow=\topsep]{siderules}
+% https://tex.stackexchange.com/a/458876/17858 
+% rounded pink rectangles around an inline word
+\newcommand{\sticker}[1]{\tikz[baseline=(X.base)]
+	                 \node [draw=red,
+			 	fill=pink!60,
+				semithick,
+                                rectangle,
+				inner sep=2pt, 
+				rounded corners=3pt](X){{\footnotesize \color{red} #1}};} 
+\newif\ifshowcode
+\showcodetrue
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{linkcolor}{rgb}{0.1, 0.60, 0.20}
+\usepackage{todonotes}
+\usepackage{booktabs}
+\usepackage[%
+      raiselinks,%
+      pdfhighlight=/O,%
+      hyperfigures,%
+      breaklinks,%
+      colorlinks,%
+      pdfstartview=FitBH,%
+      linkcolor={linkcolor},%
+      anchorcolor={linkcolor},%
+      citecolor={linkcolor},%
+      filecolor={linkcolor},%
+      menucolor={linkcolor},%
+      urlcolor={linkcolor}%
+   ]{hyperref}
+% Taken from https://tex.stackexchange.com/a/371469 
+% for drawing a nice rule across the page
+\newcommand\myrule{\par\noindent\rule{\textwidth}{0.4pt}}
+\usepackage{xcolor}
+\usepackage{sectsty}
+%\allsectionsfont{\sffamily}
+\definecolor{lava}{rgb}{0.81, 0.06, 0.13}
+\definecolor{mahogany}{rgb}{0.75, 0.25, 0.0}
+\definecolor{sacramentostategreen}{rgb}{0.0, 0.34, 0.25}
+\setcounter{tocdepth}{2}
+\usepackage{marginnote}
+\newcommand\margin[1]{\marginnote{\color{cadmiumgreen}{#1} }}
+\definecolor{cadmiumgreen}{rgb}{0.0, 0.42, 0.24}
+% Squaremarkers for bullets of itemized lists
+\usepackage{wasysym}
+\usepackage{marvosym}
+%\renewcommand{\labelitemi}{\scriptsize$\blacksquare$}
+\renewcommand{\labelitemi}{\ding{118}} % 4 squares in the form of a diamond
+% To express an idea in a crunchy way.
+\newcommand{\crunchy}[1]{\lbrack{} \large \textit{#1} \normalsize \rbrack}
+% For commenting out block of text, that you still 
+% want syntax highlighted in the LaTeX file
+\newcommand{\remove}[1]{} 
+% For page numbers at top right. Found this here
+% https://tex.stackexchange.com/a/56321
+\pagestyle{myheadings}
+% For left aligning title and authors
+% https://tex.stackexchange.com/q/85343
+\makeatletter
+\usepackage[us,12hr]{datetime}
+\renewcommand{\maketitle}{\bgroup\setlength{\parindent}{0pt}
+\begin{flushleft}
+  \textbf{\LARGE \@title} \\ \vspace{2mm} 
+  \large \@author  \\ \vspace{3.5mm} 
+  \large \@date{} \\
+  \currenttime \normalsize
+\end{flushleft}\egroup
+}
+\makeatother
+% https://tex.stackexchange.com/a/192504 
+% Force itemize inside description onto a new line
+\setlist[itemize]{topsep=0pt,before=\leavevmode\vspace{-1.5em}}
+\setlist[description]{style=nextline}
+% For highlighting options to programs 
+% according to man-pages.
+\definecolor{optcol}{rgb}{0.70, 0, 0}
+\newcommand{\opt}[1]{{\color{optcol}\textit{\texttt{#1}}}}

@@ -1,0 +1,48 @@
+%------- Generic settings
+\documentclass[10pt,oneside,a4paper]{article} 
+
+\input{settings.tex}
+
+\usepackage{noweb}
+%------- Bibtex
+\usepackage[backend=bibtex, style=alphabetic, sorting=none]{biblatex}
+%\setlength\bibitemsep{\baselineskip}
+\addbibresource{References.bib}
+%------- Title
+\usepackage{longfbox}
+\title{\Huge \lfbox[background-color=green!10,border-width=0.00pt]{Conical Routing For Lookahead}}
+\author{\Large Gaurish Telang \\ 
+       \Large \href{mailto:gaurish108@gmail.com}{\texttt{gaurish108@gmail.com}}}
+%------- Top right picture, a picture representative of the program to be implemented, 
+\usepackage{eso-pic}
+%\AddToShipoutPicture*
+%    {\put(365,610){\frame{\includegraphics[width=5.40cm]{miscimages/pitbull.png}}}}
+%-------- Coloring section titles
+\usepackage{xcolor,titlesec}
+\titleformat{name=\section}[block]
+  {\scshape\rmfamily\Large}
+  {}
+  {0pt}
+  {\colorsection}
+\titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}
+\newcommand{\colorsection}[1]{%
+  \colorbox{green!10}{\parbox{\dimexpr\textwidth-2\fboxsep}{\thesection\;\; #1}}}
+%-------- Indices
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{imakeidx}
+\makeindex[columns=3, title=\fbox{Index}, intoc]
+%-------------------------------------------------------------------------------
+\begin{document}
+\maketitle
+% Man-page and TOC
+%\input{manpage.tex} \newpage
+\tableofcontents
+% Begin main contents
+\input{mainlitprog.tex}
+% Bibliography, appendices and index
+\printbibliography
+%\input{appendices.tex}
+%\newpage
+%\printindex
+\end{document}
