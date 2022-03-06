@@ -7,7 +7,9 @@ latex_compiler="pdflatex"
 set -e
 if [ $# -eq 0 ]; then
     cd tex
+    printf "weaving"
     noweave  -n -index -latex mainlitprog.nw > mainlitprog.tex
+    printf "latex compiling"
     $latex_compiler -interaction=nonstopmode -halt-on-error  -shell-escape $main_tex_file >> ../wtta.log 2>&1
     bibtex $main_aux_file                                                                 >> ../wtta.log 2>&1
     $latex_compiler -interaction=nonstopmode -halt-on-error  -shell-escape $main_tex_file >> ../wtta.log 2>&1
