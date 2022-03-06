@@ -1,0 +1,4 @@
+This code implements conical routing for computing lookahead paths in domains having 
+stalactites and stalagmites. A lookahead path is one in which each point on the path
+can see a significant chunk of the path ahead of it. This problem is important in the
+era of driverless cars. See main.pdf for details. 
