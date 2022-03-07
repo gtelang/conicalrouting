@@ -78,6 +78,6 @@ such that
 
  \end{itemize}
 
+This scheme has been implemented in Python 2.7.12 using the Python bindings of CGAL (especially those of its kernel) on a Thinkpad laptop running Linux Mint. 
 
-
- This scheme has been implemented in Python 2.7.12 using the Python bindings of CGAL (especially those of its kernel) on a Thinkpad laptop running Linux Mint. 
+A simple graph theoretic problem can be abstracted from this. See %\autoref{fig:abstractmulti} 

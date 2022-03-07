@@ -1,4 +1,5 @@
 size(250);
+settings.outformat="pdf";
 import geometry;
 
 real scale = 1.0;
@@ -21,8 +22,8 @@ for (int i=0 ; i<N ; ++i){
       else if (i==2){
 	draw(hseg,(blue+1.2), arrow=Arrows(TeXHead));
 
-	markangle(L=scale(0.56)*"$\Delta \theta_i$",  h1p, O, h1, BeginArcArrow(TeXHead));
-	markangle(L=scale(0.56)*"$\Delta \theta_i$",  -h1p, O, -h1, BeginArcArrow(TeXHead));
+	markangle(L=scale(0.56)*"$\Delta \theta$",  h1p, O, h1, BeginArcArrow(TeXHead));
+	markangle(L=scale(0.56)*"$\Delta \theta$",  -h1p, O, -h1, BeginArcArrow(TeXHead));
 	label(scale(0.7)*"Rocking line ", h1,NE);
       }
       else{
