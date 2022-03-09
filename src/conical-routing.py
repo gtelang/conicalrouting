@@ -452,7 +452,7 @@ def conical_routing(fig, ax, box, dx, eps, W, lookahead_lb, lookaheadmethod=min_
           #......................................................................................................
           # Draw  the graph edges by rendering the geometrical segment associated with each edge of the graph
           #......................................................................................................
-          draw_graph_edges(fig, ax, G,  alpha=0.05, markendpts_p=False)               
+          draw_graph_edges(fig, ax, G,  alpha=0.01, markendpts_p=False)               
 
           #..............................................
           # Draw all the armbunches
@@ -1096,12 +1096,12 @@ def make_non_zero_sol_edges_bar_plot(fig, ax, numcones, non_zero_sol_edges):
 
 #---------------------------------------------------------------------------------
 def main():
-     dx           = 0.05
+     dx           = 0.1
      eps          = 0.02
      W            = 5
-     lookahead_lb = 0.5
+     lookahead_lb = 0.7
 
-     box = make_box(start=(0,0), target=(1,0), xleft=0, xright=1, ydown=0, yup=1, mtips=list(map(np.asarray, [ [0.2,0.7] ])), ttips=[])
+     box = make_box(start=(0.45,0), target=(0.7,0), xleft=0, xright=1, ydown=0, yup=1, mtips=list(map(np.asarray, [ [0.5,0.5] ])), ttips=[])
      #box = make_box(start=(0,0), target=(1,1), xleft=0, xright=1, ydown=0, yup=1, mtips=list(map(np.asarray, [ [0.2,0.7] ])), ttips=list(map(np.asarray, [[0.7,0.2]])))
      #box = make_box(start=(0,0), target=(3,0.6), xleft=0, xright=3, ydown=0, yup=1, mtips=list(map(np.asarray, [[0.5,0.7], [1.2,0.5]])), ttips  = list(map(np.asarray, [(0.8,0.2), (2.5,0.2)])) )
      #box = make_box(start=(0,0), target=(3,0.6), xleft=0, xright=3, ydown=0, yup=1, mtips=list(map(np.asarray, [[0.5,0.7], [1.2,0.5],[2,0.5]])), ttips  = list(map(np.asarray, [(0.8,0.2), (1.5,0.2)  , (2.5,0.2)])) )
@@ -1113,7 +1113,7 @@ def main():
      # Set up the Matplotlib canvas. 
      fig, ax = plt.subplots()
      ax.set_aspect(1.0)
-     ax.set_title("Routing scheme for generating (near optimal) arclength lookahead curves", fontsize=15)
+     #ax.set_title("Routing scheme for generating (near optimal) arclength lookahead curves", fontsize=15)
      from matplotlib.ticker import (AutoMinorLocator, MultipleLocator)
      ax.xaxis.set_major_locator(MultipleLocator(0.1))
      ax.yaxis.set_major_locator(MultipleLocator(0.1))
@@ -1147,14 +1147,15 @@ def main():
      draw_path(fig,ax,G,lookpathnodeids, color='green', linewidth=2, alpha=1.0)
      ax.set_xlabel("Shortest Path (Red) length: "       + str(round(pathlength(G,spathnodeids   ),3))  +\
                     "\nLookahead Path (Green) length :" + str(round(pathlength(G,lookpathnodeids),3)) +\
-                    "\nLP relaxation lower bound (Magenta) \underline{weighted} length :" + str(round(info['path_length_lb'],3)),\
+                    "\nLP relaxation lower bound \underline{weighted} length :" + str(round(info['path_length_lb'],3)),\
                    fontsize=12)
      ax.set_ylabel("Lookahead Lower Bound = " + str(round(lookahead_lb,4)), fontsize=15)
+     plt.show()
 
      # bar chart of the non-zero edges
      fig_bar, ax_bar = plt.subplots()
      make_non_zero_sol_edges_bar_plot(fig_bar,ax_bar,info['numcones'],info['non_zero_sol_edges'])
-     plt.show()
+     plt.savefig('cone-non-zero-profile.pdf', bbox_inches='tight')
 
 
 #-----------------------------------------------------------------------------    
